@@ -1,0 +1,29 @@
+{
+  "name": "csv-from-html",
+  "version": "1.0.0",
+  "description": "Package to download csv files from html elements",
+  "module": "dist/main.esm.min.js",
+  "browser": "dist/main.umd.min.js",
+  "main": "dist/main.esm.min.js",
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/valeporpo/csv-from-html.git"
+  },
+  "keywords": [
+    "csv",
+    "html",
+    "download",
+    "export",
+    "generate"
+  ],
+  "author": "Valerio Porporato",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/valeporpo/csv-from-html/issues"
+  },
+  "homepage": "https://github.com/valeporpo/csv-from-html#readme"
+}
