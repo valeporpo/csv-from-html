@@ -1,8 +1,8 @@
 # csv-from-html
-This library WITH NO DEPENDENCIES allows you to generate and download csv files containing the rendered text of HTML elements
+This library allows you to generate and download csv files containing the rendered text of HTML elements
 (technicallys speaking, the [innerText](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/innerText) property of the element).
 For example, starting from
-```
+```html
 <div class="csv-from-html-table">
   <div class="csv-from-html-row">
     <div class="csv-from-html-cell">Donec condimentum</div>
@@ -26,7 +26,7 @@ For example, starting from
   </div>
 </div>
 ```
-it will produce this csv file:
+it will produce a csv file like this:
 . | A | B | C |
 --- | --- | --- | --- |
 1 | Donec condimentum | ligula sed maximus sagittis | Maecenas non auctor libero |
@@ -34,16 +34,63 @@ it will produce this csv file:
 3 | Nullam tincidunt metus diam | et luctus ante vulputate vitae | Pellentesque commodo nisi metus |
 4 | quis bibendum purus | finibus molestie | Lorem ipsum dolor sit amet |
 
-Given an HTML structure like the one shown above, which is organized as a table without being (necessarily) an HTML table, once you have defined CSS selectors to identify an external wrapper (in the example, .csv-from-html-table) the "rows" (.csv-from-html-row) and "cells" within them (.csv-from-html-cell), you will be able to generate a csv file containing its innerText organized exactly as in the HTML structure.
+Given an HTML structure like the one shown above, which is organized as a table without being (necessarily) an HTML ```<table>```, once you have defined CSS selectors to identify an external wrapper (in the example, ```.csv-from-html-table```) the "rows" (```.csv-from-html-row```) and "cells" within them (```.csv-from-html-cell```), you will be able to generate a csv file containing its innerText organized exactly as in the HTML structure.
 The "row" elements constitute the row separators in the csv, and the "cell" elements constitute the separators between cells.
 
 ## Installation
-The installation command is 'npm install csv-from-html'.
+The installation command is
+```
+npm install csv-from-html
+```
 
+## Import
+Since this package is intended to run in the browser, you have to include it via script tag in your html file. You have three options to do that.
+### Using a module boundler
+> [!NOTE]
+> This is the modern and recommended way to include this package.
+I'll give you an example of doing this with webpack
+1. Create a JS file in your project, for example './src/index.js', where you import CsvFromHtml and write your code:
+```javascript
+import CsvFromHtml from 'csv-from-html'
+export {CsvFromHtml as default}
+    
+const csv = new CsvFromHtml({
+    ...
+})
+```
+2. Install webpack with ```npm install -g webpack webpack-cli```
+3. Create the configuration file webpack.config.js at the root of your project and write inside it:
+  ```javascript
+  const path = require('path');
+  
+  module.exports = {
+    mode: 'development',
+    entry: './src/index.js', // the path of the JS file you created above
+    output: {
+      filename: 'my-csv-from-html.js', // the code you will include with script tag
+      path: path.resolve(__dirname, 'dist') // the directory location of the code
+    }
+  };
+```
+4. Run ```webpack```. This command will create the source file at './dist/my-csv-from-html.js'
+5. Include the file in the html file with
+   ```html
+   <script src="./dist/my-csv-from-html.js"></script>
+   ```
+   
+### Using a CDN
+
+
+### Using the package entry point as script src attribute
+> [!CAUTION]
+> This method falls under bad practice. It should be reserved for testing purposes and is strongly discouraged in production environments.
+```html
+<script src="./node_modules/csv-from-html/dist/main.umd.min.js"></script>
+```
 ## Usage
 First import the package with
-```
-import {CsvFromHtmlValidator} from 'csv-from-html'
+```javascript
+import {! CsvFromHtmlValidator} from 'csv-from-html'
 ```
 Create an instance of class CsvFromHtml and pass the following **required** properties to the constructor:
 
@@ -67,7 +114,7 @@ You can also pass to it the following **non-required** properties
 > and create the csv file using the elements that currently matches the rowSelector and cellSelector.
 
 ## Example
-```
+```javascript
 const csv = new CsvFromHtml({
       tableSelector: '.csv-from-html-table',
       triggerSelector: '#csv-from-html-trigger',
