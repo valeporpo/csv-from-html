@@ -25,6 +25,7 @@ For example, starting from
     <div class="csv-from-html-cell">Lorem ipsum dolor sit amet</div>
   </div>
 </div>
+
 ```
 it will produce a csv file like this:
 . | A | B | C |
