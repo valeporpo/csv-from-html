@@ -56,7 +56,7 @@
         </tr>
         <tr>
           <td>bA4</td>
-          <td>bB4</td>
+          <td class="special">bB4</td>
           <td>bC4</td>
           <td>bD4</td>
         </tr>
@@ -78,7 +78,17 @@
       triggerSelector: '#csv-from-html-trigger',
       rowSelector: 'tr',
       cellSelector: 'th, td',
-      colsDelimiter: ';'
+      colsDelimiter: ';',
+      filter :function(text, i, j, cell) {
+          let textToSave = text
+          if(i==0) {
+            textToSave = 'Column ' + textToSave
+          }
+          if(cell.classList.contains('special')) {
+            textToSave = '***' + textToSave + '***'
+          }
+          return textToSave
+      }
     })
   </script>
 </body>
