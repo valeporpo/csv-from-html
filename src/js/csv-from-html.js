@@ -2,7 +2,6 @@ import {CsvFromHtmlValidator, allCsvFromHtmlInstances} from './csv-from-html-val
 
 export default class CsvFromHtml {
     constructor(obj) {
-        //console.log('new CsvFromHtml')
       this.validator = new CsvFromHtmlValidator(obj);
       if (!this.validator.validate()) {
         throw new Error(
@@ -31,8 +30,8 @@ export default class CsvFromHtml {
   
       this.loadTrigger();
   
-      if (typeof obj.callbacks !== "undefined") {
-        this.callbacks = obj.callbacks;
+      if (typeof obj.filter !== "undefined") {
+        this.callback = obj.filter;
       }
   
       this.dataArray = [];
@@ -83,17 +82,14 @@ export default class CsvFromHtml {
       let row;
       if (!rows) return;
       
-      for (let i = 0; i < rows.length; i++) {
-        row = [...rows[i].querySelectorAll(this.cellSelector)];
+      for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+        row = [...rows[rowIndex].querySelectorAll(this.cellSelector)];
         this.dataArray.push(
           row
-            .map((cell) => {
+            .map((cell, colIndex) => {
               let text = cell.innerText;
-              if (typeof this.callbacks === "object") {
-                this.callbacks.forEach(function (callback) {
-                  if (cell.matches(callback.selector))
-                    text = callback.callback(text);
-                });
+              if (typeof this.callback === "function") {
+                text = this.callback(text, rowIndex, colIndex, cell);
               }
               return '"' + text + '"';
             })

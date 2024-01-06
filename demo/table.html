@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  .data-wrapper {
+    border: 3px solid purple;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  table thead th,
+  table tbody td,
+  table tfoot td {
+    border: 2px solid black;
+    text-align: center;
+  }
+</style>
+
+<body>
+  <a id="csv-from-html-trigger" href="">Download</a>
+  <div class="data-wrapper csv-from-html-table">
+    <table>
+      <thead>
+        <tr>
+          <th>hA</th>
+          <th>hB</th>
+          <th>hC</th>
+          <th>hD</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>bA1</td>
+          <td>bB1</td>
+          <td>bC1</td>
+          <td>bD1</td>
+        </tr>
+        <tr>
+          <td>bA2</td>
+          <td>bB2</td>
+          <td>bC2</td>
+          <td>bD2</td>
+        </tr>
+        <tr>
+          <td>bA3</td>
+          <td>bB3</td>
+          <td>bC3</td>
+          <td>bD3</td>
+        </tr>
+        <tr>
+          <td>bA4</td>
+          <td class="special">bB4</td>
+          <td>bC4</td>
+          <td>bD4</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>fA</td>
+          <td>fB</td>
+          <td>fC</td>
+          <td>fD</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  <script src="../dist/main.umd.min.js"></script>
+  <script>
+    const csvTable = new CsvFromHtml({
+      tableSelector: '.csv-from-html-table',
+      triggerSelector: '#csv-from-html-trigger',
+      rowSelector: 'tr',
+      cellSelector: 'th, td',
+      colsDelimiter: ';',
+      filter :function(text, i, j, cell) {
+          let textToSave = text
+          if(i==0) {
+            textToSave = 'Column ' + textToSave
+          }
+          if(cell.classList.contains('special')) {
+            textToSave = '***' + textToSave + '***'
+          }
+          return textToSave
+      }
+    })
+  </script>
+</body>
+
+</html>

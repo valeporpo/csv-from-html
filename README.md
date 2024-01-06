@@ -25,6 +25,7 @@ For example, starting from
     <div class="csv-from-html-cell">Lorem ipsum dolor sit amet</div>
   </div>
 </div>
+
 ```
 it will produce a csv file like this:
 . | A | B | C |
@@ -34,8 +35,8 @@ it will produce a csv file like this:
 3 | Nullam tincidunt metus diam | et luctus ante vulputate vitae | Pellentesque commodo nisi metus |
 4 | quis bibendum purus | finibus molestie | Lorem ipsum dolor sit amet |
 
-Given an HTML structure like the one shown above, which is organized as a table without being (necessarily) an HTML ```<table>```, once you have defined CSS selectors to identify an external wrapper (in the example, ```.csv-from-html-table```) the "rows" (```.csv-from-html-row```) and "cells" within them (```.csv-from-html-cell```), you will be able to generate a csv file containing its innerText organized exactly as in the HTML structure.
-The "row" elements constitute the row separators in the csv, and the "cell" elements constitute the separators between cells.
+Given an HTML structure like the one shown above, which is organized as a table without being (necessarily) an HTML ```<table>```, once you have defined CSS selectors to identify an external wrapper (in the example, ```.csv-from-html-table```) the "rows" (```.csv-from-html-row```) and "cells" within them (```.csv-from-html-cell```), you will be able to generate a csv file containing its innerText organized exactly _as it is_ in the HTML structure.
+Every "row" element constitute a row in the csv, and every "cell" element constitute a cell inside a row.
 
 ## Installation
 The installation command is
@@ -45,14 +46,17 @@ npm install csv-from-html
 
 ## Import
 Since this package is intended to run in the browser, you have to include it via script tag in your html file. You have three options to do that.
-### Using a module boundler
-> [!NOTE]
-> This is the modern and recommended way to include this package.
-I'll give you an example of doing this with webpack
-1. Create a JS file in your project, for example './src/index.js', where you import CsvFromHtml and write your code:
+
+### A) Using a CDN (![#1589F0](https://via.placeholder.com/15/1589F0/000000?text=+) the easiest way)
+Just include this tag in your html:
+```html
+<script src="https://unpkg.com/csv-from-html@1.0.1/dist/main.umd.min.js"></script>
+```
+### B) Using a module boundler (![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) the recommended way)
+I'll give you an example of doing this with [webpack](https://webpack.js.org/).  
+1. Create a JS file in your project, for example './src/index.js', where you import ```CsvFromHtml``` and write your code:
 ```javascript
 import CsvFromHtml from 'csv-from-html'
-export {CsvFromHtml as default}
     
 const csv = new CsvFromHtml({
     ...
@@ -67,32 +71,24 @@ const csv = new CsvFromHtml({
     mode: 'development',
     entry: './src/index.js', // the path of the JS file you created above
     output: {
-      filename: 'my-csv-from-html.js', // the code you will include with script tag
-      path: path.resolve(__dirname, 'dist') // the directory location of the code
+      filename: 'my-csv-from-html.js', // the file you will include with script tag
+      path: path.resolve(__dirname, 'dist') // the directory location of the file
     }
   };
 ```
 4. Run ```webpack```. This command will create the source file at './dist/my-csv-from-html.js'
-5. Include the file in the html file with
+5. Include this tag in your html
    ```html
    <script src="./dist/my-csv-from-html.js"></script>
-   ```
-   
-### Using a CDN
-
-
-### Using the package entry point as script src attribute
-> [!CAUTION]
-> This method falls under bad practice. It should be reserved for testing purposes and is strongly discouraged in production environments.
+   ``` 
+### C) Using the package entry point as script src attribute (![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) don't use it in production)
+This method falls under bad practice. It should be reserved for testing purposes and is strongly discouraged in production environments.  
+Just include this tag in your html:
 ```html
 <script src="./node_modules/csv-from-html/dist/main.umd.min.js"></script>
 ```
 ## Usage
-First import the package with
-```javascript
-import {! CsvFromHtmlValidator} from 'csv-from-html'
-```
-Create an instance of class CsvFromHtml and pass the following **required** properties to the constructor:
+Create an object ```CsvFromHtml``` and pass the following **required** properties to the constructor:
 
 - ```tableSelector```: a CSS selector for "table" element (the wrapper)
 - ```rowSelector```: a CSS selector for "row" elements
@@ -102,15 +98,18 @@ Create an instance of class CsvFromHtml and pass the following **required** prop
 You can also pass to it the following **non-required** properties
 
 - ```fileName```: the name of the file without extension (default is 'myFile')
-- ```callbacks```: an array of objects each containig two attributes: selector and callback.
-             Each callback is applied to the contents of each cell of the csv file that matches the selector.
-             Callbacks are executed in the order in which the objects containing them are arranged in the array:
-  first the callback of the object in position 0, then the callback of the object in position 1, and so on.
+- ```filter```: a callback ```function(innerText, rowIndex, colIndex, cell)``` that runs for each cell, which returns its innerText before it is saved in the csv.
+     - Parameters
+        - ```innerText```: the innerText of the current cell (required)
+        - ```rowIndex```: the index (starting from 0) of the current row (optional)
+        - ```colIndex```: the index (starting from 0) of the current column (optional)
+        - ```cell```: the cell element (optional)
+     - Return value  
+     The value that will be saved in the csv file for the current cell
 - ```colsDelimiter```: the column delimiter of the csv file (default is ';')
 
-> [!TIP]
-> When you create the CsvFromHtml object, neither the "row" elements nor the "cell" elements nor the trigger element need to exist in the DOM.
-> Using event delegation, it will capture the click on the first element in the DOM Tree that currently matches thetriggerSelector
+> When you create the CsvFromHtml object, neither the "table" element nor the "row" elements nor the "cell" elements nor the trigger element need to exist in the DOM.
+> Using event delegation, it will capture the click on the first element in the DOM Tree that currently matches the triggerSelector
 > and create the csv file using the elements that currently matches the rowSelector and cellSelector.
 
 ## Example
@@ -122,25 +121,17 @@ const csv = new CsvFromHtml({
       cellSelector: '.csv-from-html-cell',
       colsSeparator: ';',
       fileName: 'example-download',
-      callbacks: [
-        {
-            selector : '*', // applies to all cells, before all other callbacks
-            callback : function(text) {
-                return 'Cell content: '+text;
-            }
-        },
-        {
-            selector : '.lowercase', // applies only to cells with class 'lowercase', as second
-            callback : function(text) {
-                return text.toLowerCase();
-            }
-        },
-        {
-            selector : '.uppercase', // applies only to cells with class 'uppercase', after every other callback
-            callback : function(text) {
-                return text.toUpperCase();
-            }
-        }
-      ]
+      filter : function(t, i, j, c) {
+          let textToSave = t
+          if(i==0) {
+            // Prepend some text to all cells from first row
+            textToSave = 'Column ' + textToSave
+          }
+          if(c.classList.contains('special')) {
+            // Wrap text from cells with class 'special' inside '***'
+            textToSave = '***' + textToSave + '***'
+          }
+          return textToSave
+      }
     })
 ```

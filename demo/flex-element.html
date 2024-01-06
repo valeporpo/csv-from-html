@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  .data-wrapper {
+    border: 3px solid purple;
+  }
+
+  .csv-from-html-row {
+    display: flex;
+    justify-content: space-between;
+    border: 2px dotted black;
+  }
+
+  .csv-from-html-row:nth-child(odd) {
+    background-color: gainsboro;
+  }
+
+  .csv-from-html-col {
+    padding: 1rem;
+    text-align: center;
+  }
+</style>
+
+<body>
+  <a id="csv-from-html-trigger-flex" href="">Download</a>
+  <div class="data-wrapper csv-from-html-flex">
+    <div class="csv-from-html-row">
+      <div class="csv-from-html-col">
+        a1
+      </div>
+      <div class="csv-from-html-col">
+        b1
+      </div>
+      <div class="csv-from-html-col">
+        c1
+      </div>
+      <div class="csv-from-html-col">
+        d1
+      </div>
+    </div>
+    <div class="csv-from-html-row">
+      <div class="csv-from-html-col">
+        a2
+      </div>
+      <div class="csv-from-html-col">
+        b2
+      </div>
+      <div class="csv-from-html-col">
+        c2
+      </div>
+      <div class="csv-from-html-col">
+        d2
+      </div>
+    </div>
+    <div class="csv-from-html-row">
+      <div class="csv-from-html-col">
+        a3
+      </div>
+      <div class="csv-from-html-col">
+        b3
+      </div>
+      <div class="csv-from-html-col">
+        c3
+      </div>
+      <div class="csv-from-html-col">
+        d3
+      </div>
+    </div>
+    <div class="csv-from-html-row">
+      <div class="csv-from-html-col">
+        a4
+      </div>
+      <div class="csv-from-html-col">
+        b4
+      </div>
+      <div class="csv-from-html-col">
+        c4
+      </div>
+      <div class="csv-from-html-col">
+        d4
+      </div>
+    </div>
+    <div class="csv-from-html-row">
+      <div class="csv-from-html-col">
+        a5
+      </div>
+      <div class="csv-from-html-col">
+        b5
+      </div>
+      <div class="csv-from-html-col">
+        c5
+      </div>
+      <div class="csv-from-html-col">
+        d5
+      </div>
+    </div>
+    <div class="csv-from-html-row">
+      <div class="csv-from-html-col">
+        a6
+      </div>
+      <div class="csv-from-html-col">
+        b6
+      </div>
+      <div class="csv-from-html-col">
+        c6
+      </div>
+      <div class="csv-from-html-col">
+        d6
+      </div>
+    </div>
+    <div class="csv-from-html-row">
+      <div class="csv-from-html-col">
+        a7
+      </div>
+      <div class="csv-from-html-col">
+        b7
+      </div>
+      <div class="csv-from-html-col">
+        c7
+      </div>
+      <div class="csv-from-html-col">
+        d7
+      </div>
+    </div>
+    <div class="csv-from-html-row">
+      <div class="csv-from-html-col">
+        a8
+      </div>
+      <div class="csv-from-html-col">
+        b8
+      </div>
+      <div class="csv-from-html-col">
+        c8
+      </div>
+      <div class="csv-from-html-col">
+        d8
+      </div>
+    </div>
+  </div>
+  <script src="../dist/main.umd.min.js"></script>
+  <script>
+    const csvFlex = new CsvFromHtml({
+      tableSelector: '.csv-from-html-flex',
+      triggerSelector: '#csv-from-html-trigger-flex',
+      rowSelector: '.csv-from-html-row',
+      cellSelector: '.csv-from-html-col',
+      colsDelimiter: ';'
+    })
+  </script>
+</body>
+
+</html>
