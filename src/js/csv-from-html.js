@@ -3,9 +3,10 @@ import {CsvFromHtmlValidator, allCsvFromHtmlInstances} from './csv-from-html-val
 export default class CsvFromHtml {
     constructor(obj) {
       this.validator = new CsvFromHtmlValidator(obj);
-      if (!this.validator.validate()) {
+      const validatorResponse = this.validator.validate()
+      if (typeof validatorResponse === 'object' && typeof validatorResponse.status === 'string' && validatorResponse.status === 'fail') {
         throw new Error(
-          "Invalid parameters. Cannot construct CsvFromHtml Instance."
+          validatorResponse.message
         );
       }
       

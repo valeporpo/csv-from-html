@@ -1,6 +1,6 @@
 # csv-from-html
-This library allows you to generate and download csv files containing the rendered text of HTML elements
-(technicallys speaking, the [innerText](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/innerText) property of the element).
+This library allows you to generate and download csv files containing the text inside HTML elements
+(technicallys speaking, the [innerText](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/innerText) property of the elements).
 For example, starting from
 ```html
 <div class="csv-from-html-table">
@@ -45,24 +45,32 @@ npm install csv-from-html
 ```
 
 ## Import
-Since this package is intended to run in the browser, you have to include it via script tag in your html file. You have three options to do that.
+Since this package is intended to run in the browser, you have to include it using a ```<script>``` tag in your html file. You have three options to do that.
 
 ### A) Using a CDN (![#1589F0](https://via.placeholder.com/15/1589F0/000000?text=+) the easiest way)
 Just include this tag in your html:
 ```html
-<script src="https://unpkg.com/csv-from-html@1.0.1/dist/main.umd.min.js"></script>
+<script src="https://unpkg.com/csv-from-html@2.0.2/dist/main.umd.min.js"></script>
 ```
 ### B) Using a module boundler (![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) the recommended way)
-I'll give you an example of doing this with [webpack](https://webpack.js.org/).  
-1. Create a JS file in your project, for example './src/index.js', where you import ```CsvFromHtml``` and write your code:
+I'll give you an example of doing this with [webpack](https://webpack.js.org/). 
+1. Create a JS file in your project, for example './src/index.js', where you import the ```CsvFromHtml``` class and write the code to generate your csv file:
 ```javascript
 import CsvFromHtml from 'csv-from-html'
     
 const csv = new CsvFromHtml({
-    ...
+  // This is an example configuration
+  tableSelector: '.csv-from-html-flex',
+  triggerSelector: '#csv-from-html-trigger-flex',
+  rowSelector: '.csv-from-html-row',
+  cellSelector: '.csv-from-html-col',
+  colsDelimiter: ';'
 })
 ```
-2. Install webpack with ```npm install -g webpack webpack-cli```
+2. Install webpack with
+```
+npm install -g webpack webpack-cli
+```
 3. Create the configuration file webpack.config.js at the root of your project and write inside it:
   ```javascript
   const path = require('path');
@@ -76,13 +84,18 @@ const csv = new CsvFromHtml({
     }
   };
 ```
-4. Run ```webpack```. This command will create the source file at './dist/my-csv-from-html.js'
+Remember that, because of webpack's behavior, the scope of CsvFromHtml will be exclusively the boundled file. Therefore, you will have to write the entire code in the entry point (in this case, ./src/index.js').
+4. Run
+```
+webpack
+```
+This command will create the source file at './dist/my-csv-from-html.js'
 5. Include this tag in your html
-   ```html
-   <script src="./dist/my-csv-from-html.js"></script>
-   ``` 
-### C) Using the package entry point as script src attribute (![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) don't use it in production)
-This method falls under bad practice. It should be reserved for testing purposes and is strongly discouraged in production environments.  
+```html
+<script src="./dist/my-csv-from-html.js"></script>
+``` 
+### C) Using the package entry point as your script ```src``` attribute (![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) don't use it in production)
+This method falls under bad practice. It should be reserved for testing purposes and is strongly discouraged in production environments.
 Just include this tag in your html:
 ```html
 <script src="./node_modules/csv-from-html/dist/main.umd.min.js"></script>
@@ -109,7 +122,7 @@ You can also pass to it the following **non-required** properties
 - ```colsDelimiter```: the column delimiter of the csv file (default is ';')
 
 > When you create the CsvFromHtml object, neither the "table" element nor the "row" elements nor the "cell" elements nor the trigger element need to exist in the DOM.
-> Using event delegation, it will capture the click on the first element in the DOM Tree that currently matches the triggerSelector
+> Using event delegation, it will capture the click event on the first element in the DOM Tree that currently matches the triggerSelector
 > and create the csv file using the elements that currently matches the rowSelector and cellSelector.
 
 ## Example
