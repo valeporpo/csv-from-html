@@ -1,4 +1,4 @@
-# cfh
+# csv-from-html
 This library allows you to generate and download csv files containing the text inside HTML elements
 (technicallys speaking, the [innerText](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/innerText) property of the elements).
 For example, starting from
@@ -41,7 +41,7 @@ Every "row" element constitute a row in the csv, and every "cell" element consti
 ## Installation
 The installation command is
 ```
-npm install cfh
+npm install csv-from-html
 ```
 
 ## Import
@@ -50,13 +50,13 @@ Since this package is intended to run in the browser, you have to include it usi
 ### A) Using a CDN (![#1589F0](https://via.placeholder.com/15/1589F0/000000?text=+) the easiest way)
 Just include this tag in your html:
 ```html
-<script src="https://unpkg.com/cfh@2.0.2/dist/main.umd.min.js"></script>
+<script src="https://unpkg.com/csv-from-html@3.0.1/dist/main.umd.min.js"></script>
 ```
 ### B) Using a module boundler (![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) the recommended way)
 I'll give you an example of doing this with [webpack](https://webpack.js.org/). 
 1. Create a JS file in your project, for example './src/index.js', where you import the ```CsvFromHtml``` class and write the code to generate your csv file:
 ```javascript
-import CsvFromHtml from 'cfh'
+import CsvFromHtml from 'csv-from-html'
     
 const csv = new CsvFromHtml({
   // This is an example configuration
@@ -79,7 +79,7 @@ npm install -g webpack webpack-cli
     mode: 'development',
     entry: './src/index.js', // the path of the JS file you created above
     output: {
-      filename: 'my-cfh.js', // the file you will include with script tag
+      filename: 'my-csv-from-html.js', // the file you will include with script tag
       path: path.resolve(__dirname, 'dist') // the directory location of the file
     }
   };
@@ -90,17 +90,17 @@ Remember that, because of webpack's behavior, the scope of CsvFromHtml will be e
 ```
 webpack
 ```
-This command will create the source file at './dist/my-cfh.js'  
+This command will create the source file at './dist/my-csv-from-html.js'  
 
 5. Include this tag in your html
 ```html
-<script src="./dist/my-cfh.js"></script>
+<script src="./dist/my-csv-from-html.js"></script>
 ``` 
 ### C) Using the package entry point as your script ```src``` attribute (![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) don't use it in production)
 This method falls under bad practice. It should be reserved for testing purposes and is strongly discouraged in production environments.
 Just include this tag in your html:
 ```html
-<script src="./node_modules/cfh/dist/main.umd.min.js"></script>
+<script src="./node_modules/csv-from-html/dist/main.umd.min.js"></script>
 ```
 ## Usage
 Create an object ```CsvFromHtml``` and pass the following **required** properties to the constructor:

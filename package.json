@@ -1,6 +1,6 @@
 {
   "name": "csv-from-html",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Package to download csv files from html elements",
   "module": "dist/main.esm.min.js",
   "browser": "dist/main.umd.min.js",
