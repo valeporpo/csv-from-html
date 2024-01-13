@@ -84,12 +84,12 @@ npm install -g webpack webpack-cli
     }
   };
 ```
-Remember that, because of webpack's behavior, the scope of CsvFromHtml will be exclusively the boundled file. Therefore, you will have to write the entire code in the entry point (in this case, ./src/index.js').
+Remember that, because of webpack's behavior, the scope of CsvFromHtml will be exclusively the boundled file. Therefore, you will have to write the entire code in the entry point (in this case, ./src/index.js').  
 4. Run
 ```
 webpack
 ```
-This command will create the source file at './dist/my-csv-from-html.js'
+This command will create the source file at './dist/my-csv-from-html.js'  
 5. Include this tag in your html
 ```html
 <script src="./dist/my-csv-from-html.js"></script>
@@ -111,6 +111,8 @@ Create an object ```CsvFromHtml``` and pass the following **required** propertie
 You can also pass to it the following **non-required** properties
 
 - ```fileName```: the name of the file without extension (default is 'myFile')
+- ```delimiter```: the column delimiter of the csv file (default is ```;```)
+- ```qualifier```: the column qualifier of the csv file. Only ```"``` and ```'``` are valid entries (default is ```"```)
 - ```filter```: a callback ```function(innerText, rowIndex, colIndex, cell)``` that runs for each cell, which returns its innerText before it is saved in the csv.
      - Parameters
         - ```innerText```: the innerText of the current cell (required)
@@ -119,7 +121,6 @@ You can also pass to it the following **non-required** properties
         - ```cell```: the cell element (optional)
      - Return value  
      The value that will be saved in the csv file for the current cell
-- ```colsDelimiter```: the column delimiter of the csv file (default is ';')
 
 > When you create the CsvFromHtml object, neither the "table" element nor the "row" elements nor the "cell" elements nor the trigger element need to exist in the DOM.
 > Using event delegation, it will capture the click event on the first element in the DOM Tree that currently matches the triggerSelector

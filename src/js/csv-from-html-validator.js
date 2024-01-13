@@ -2,7 +2,7 @@ export class CsvFromHtmlValidator {
     constructor(obj) {
       this.input = obj;
       this.required = ["tableSelector", "rowSelector", "cellSelector", 'triggerSelector'];
-      this.nonRequired = ["fileName", "filter", "colsDelimiter"];
+      this.nonRequired = ["fileName", "filter", "delimiter", "qualifier"];
       this.allowed = this.required.concat(this.nonRequired);
     }
     
@@ -36,6 +36,14 @@ export class CsvFromHtmlValidator {
               message : 'Invalid parameters in "filter" function'
             }
           }
+      }
+      if(typeof this.input.qualifier === 'string') {
+        if(this.input.qualifier !== '"' && this.input.qualifier !== "'") {
+          return {
+            status : 'fail',
+            message : "Non allowed value in property 'qualifier'"
+          }
+        }
       }
       let instance
       for(let i=0; i<allCsvFromHtmlInstances.length; i++) {

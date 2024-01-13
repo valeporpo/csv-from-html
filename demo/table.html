@@ -78,7 +78,8 @@
       triggerSelector: '#csv-from-html-trigger',
       rowSelector: 'tr',
       cellSelector: 'th, td',
-      colsDelimiter: ';',
+      delimiter: ';',
+      qualifier: "'",
       filter :function(text, i, j, cell) {
           let textToSave = text
           if(i==0) {

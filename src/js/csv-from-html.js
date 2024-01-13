@@ -23,10 +23,15 @@ export default class CsvFromHtml {
         this.fileName = "myFile";
       }
   
-      if (typeof obj.colsSeparator !== "undefined") {
-        this.colsSeparator = obj.colsSeparator;
+      if (typeof obj.delimiter !== "undefined") {
+        this.colsSeparator = obj.delimiter;
       } else {
         this.colsSeparator = ";";
+      }
+      if (typeof obj.qualifier !== "undefined") {
+        this.qualifier = obj.qualifier;
+      } else {
+        this.qualifier = '"';
       }
   
       this.loadTrigger();
@@ -92,7 +97,7 @@ export default class CsvFromHtml {
               if (typeof this.callback === "function") {
                 text = this.callback(text, rowIndex, colIndex, cell);
               }
-              return '"' + text + '"';
+              return this.qualifier + text + this.qualifier;
             })
             .join(this.colsSeparator)
         );

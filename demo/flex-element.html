@@ -139,7 +139,7 @@
         c8
       </div>
       <div class="csv-from-html-col">
-        d8
+        <p>d8</p>
       </div>
     </div>
   </div>
@@ -150,17 +150,16 @@
       triggerSelector: '#csv-from-html-trigger-flex',
       rowSelector: '.csv-from-html-row',
       cellSelector: '.csv-from-html-col',
-      colsDelimiter: ';'
+      delimiter: ';',
+      qualifier: "'",
     })
     const csvFlex2 = new CsvFromHtml({
       tableSelector: '.csv-from-html-flex',
       triggerSelector: '#csv-from-html-trigger-flex',
       rowSelector: '.csv-from-html-row',
       cellSelector: '.csv-from-html-col',
-      colsDelimiter: ';',
-      filter : function() {
-
-      }
+      delimiter: ';',
+      qualifier: "'"
     })
   </script>
 </body>
