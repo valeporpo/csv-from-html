@@ -50,7 +50,7 @@ Since this package is intended to run in the browser, you have to include it usi
 ### A) Using a CDN (![#1589F0](https://via.placeholder.com/15/1589F0/000000?text=+) the easiest way)
 Just include this tag in your html:
 ```html
-<script src="https://unpkg.com/csv-from-html@3.0.1/dist/main.umd.min.js"></script>
+<script src="https://unpkg.com/csv-from-html@3.0.2/dist/main.umd.min.js"></script>
 ```
 ### B) Using a module boundler (![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) the recommended way)
 I'll give you an example of doing this with [webpack](https://webpack.js.org/). 
@@ -64,7 +64,7 @@ const csv = new CsvFromHtml({
   triggerSelector: '#cfh-trigger-flex',
   rowSelector: '.cfh-row',
   cellSelector: '.cfh-col',
-  colsDelimiter: ';'
+  delimiter: ';'
 })
 ```
 2. Install webpack with
@@ -97,45 +97,44 @@ This command will create the source file at './dist/my-csv-from-html.js'
 <script src="./dist/my-csv-from-html.js"></script>
 ``` 
 ### C) Using the package entry point as your script ```src``` attribute (![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) don't use it in production)
-This method falls under bad practice. It should be reserved for testing purposes and is strongly discouraged in production environments.
+This method falls under bad practice. It should be reserved for testing purposes and is strongly discouraged in production environments.  
 Just include this tag in your html:
 ```html
 <script src="./node_modules/csv-from-html/dist/main.umd.min.js"></script>
 ```
 ## Usage
-Create an object ```CsvFromHtml``` and pass the following **required** properties to the constructor:
-
-- ```tableSelector```: a CSS selector for "table" element (the wrapper)
-- ```rowSelector```: a CSS selector for "row" elements
-- ```cellSelector```: a CSS selector for "cell" elements (the descendants of row elements)
-- ```triggerSelector```: a CSS selector for the trigger, which must be an A tag uniquely identified
-
-You can also pass to it the following **non-required** properties
-
-- ```fileName```: the name of the file without extension (default is 'myFile')
-- ```delimiter```: the column delimiter of the csv file (default is ```;```)
-- ```qualifier```: the column qualifier of the csv file. Only ```"``` and ```'``` are valid entries (default is ```"```)
-- ```filter```: a callback ```function(innerText, rowIndex, colIndex, cell)``` that runs for each cell, which returns its innerText before it is saved in the csv.
-     - Parameters
-        - ```innerText```: the innerText of the current cell (required)
-        - ```rowIndex```: the index (starting from 0) of the current row (optional)
-        - ```colIndex```: the index (starting from 0) of the current column (optional)
-        - ```cell```: the cell element (optional)
-     - Return value  
-     The value that will be saved in the csv file for the current cell
-
-> :bulb: When you create the CsvFromHtml object, neither the "table" element nor the "row" elements nor the "cell" elements nor the trigger element need to exist in the DOM.
-> Using event delegation, it will capture the click event on the first element in the DOM Tree that currently matches the triggerSelector
-> and create the csv file using the elements that currently matches the rowSelector and cellSelector.
+1) :building_construction: Create the instance  
+    Create an object ```CsvFromHtml``` and pass the following **required** arguments to the constructor:
+    
+    ```tableSelector```: a CSS selector for "table" element (the wrapper)  
+    ```rowSelector```: a CSS selector for "row" elements  
+    ```cellSelector```: a CSS selector for "cell" elements (the descendants of row elements)
+        
+    You can also pass to it the following **non-required** arguments:  
+    
+    ```triggerSelector```: a CSS selector for the download trigger, which must be an A tag uniquely identified  
+    ```fileName```: the name of the file without extension (default is 'myFile')  
+    ```delimiter```: the column delimiter of the csv file (default is ```;```)  
+    ```qualifier```: the column qualifier of the csv file. Only ```"``` and ```'``` are valid entries (default is ```"```)  
+    ```filter```: a callback ```function(innerText, rowIndex, colIndex, cell)``` that runs for each cell, which returns the value that will be saved in the csv file for the current cell. The following is a description of its parameters:  
+   - ```innerText```: the innerText of the current cell (required)  
+   - ```rowIndex```: the index (starting from 0) of the current row (optional)  
+   - ```colIndex```: the index (starting from 0) of the current column (optional)  
+   - ```cell```: the cell element (optional)
+2) :file_folder: Download the file  
+   You have two options to do that.  
+   2a) If you provided the optional parameter ```triggerSelector``` to the constructor, clicking on the first element that matches the selector will start the download.  
+   2b) Using the ```download``` method provided by the ```CsvFromHtml``` object.
+> :bulb: When you create the CsvFromHtml object, neither the "table" element nor the "row" elements nor the "cell" elements nor the trigger element need to exist in the DOM. Using event delegation, it will capture the click event on the first element in the DOM Tree that currently matches the triggerSelector and create the csv file using the elements that currently matches the tableSelector, the rowSelector and cellSelector. This behavior is useful, for example, when the table content is dynamic and may change in response to actions made by the user.
 
 ## Example
 ```javascript
 const csv = new CsvFromHtml({
       tableSelector: '.cfh-table',
-      triggerSelector: '#cfh-trigger',
+      triggerSelector: '#cfh-trigger', // When the user clicks on the element with id "cfh-trigger", the download will start (it must be an A tag)
       rowSelector: '.cfh-row',
       cellSelector: '.cfh-cell',
-      colsSeparator: ';',
+      delimiter: ';',
       fileName: 'example-download',
       filter : function(t, i, j, c) {
           let textToSave = t
@@ -150,4 +149,7 @@ const csv = new CsvFromHtml({
           return textToSave
       }
     })
+document.querySelector("#cfh-trigger-2").addEventListener("click", function() {
+  csv.download() // The download will also start when the user clicks on the element with id "cfh-trigger-2"
+})
 ```

@@ -147,19 +147,14 @@
   <script>
     const csvFlex = new CsvFromHtml({
       tableSelector: '.csv-from-html-flex',
-      triggerSelector: '#csv-from-html-trigger-flex',
       rowSelector: '.csv-from-html-row',
       cellSelector: '.csv-from-html-col',
       delimiter: ';',
       qualifier: "'",
     })
-    const csvFlex2 = new CsvFromHtml({
-      tableSelector: '.csv-from-html-flex',
-      triggerSelector: '#csv-from-html-trigger-flex',
-      rowSelector: '.csv-from-html-row',
-      cellSelector: '.csv-from-html-col',
-      delimiter: ';',
-      qualifier: "'"
+    document.querySelector('.data-wrapper .csv-from-html-row:last-child').addEventListener('click',
+    function() {
+      csvFlex.download()
     })
   </script>
 </body>

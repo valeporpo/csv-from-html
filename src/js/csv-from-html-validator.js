@@ -1,8 +1,8 @@
 export class CsvFromHtmlValidator {
     constructor(obj) {
       this.input = obj;
-      this.required = ["tableSelector", "rowSelector", "cellSelector", 'triggerSelector'];
-      this.nonRequired = ["fileName", "filter", "delimiter", "qualifier"];
+      this.required = ["tableSelector", "rowSelector", "cellSelector"];
+      this.nonRequired = ['triggerSelector', "fileName", "filter", "delimiter", "qualifier"];
       this.allowed = this.required.concat(this.nonRequired);
     }
     
@@ -48,10 +48,15 @@ export class CsvFromHtmlValidator {
       let instance
       for(let i=0; i<allCsvFromHtmlInstances.length; i++) {
         instance = allCsvFromHtmlInstances[i]
-        if(instance.tableSelector === this.input.tableSelector || instance.triggerSelector === this.input.triggerSelector)
+        if(instance.tableSelector === this.input.tableSelector)
         return {
           status : 'fail',
-          message : 'Cannot create multiple instances of CsvFromHtml with the same wrapper nor with the same trigger'
+          message : 'Cannot create multiple instances of CsvFromHtml with the same wrapper'
+        }
+        if(typeof instance.triggerSelector !== 'undefined' && this.input.triggerSelector !== 'undefined' && instance.triggerSelector === this.input.triggerSelector)
+        return {
+          status : 'fail',
+          message : 'Cannot create multiple instances of CsvFromHtml with the same trigger'
         }
       }
   
