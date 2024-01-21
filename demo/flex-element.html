@@ -28,7 +28,7 @@
 </style>
 
 <body>
-  <a id="csv-from-html-trigger-flex" href="">Download</a>
+  <button id="csv-from-html-trigger-flex">Download</button>
   <div class="data-wrapper csv-from-html-flex">
     <div class="csv-from-html-row">
       <div class="csv-from-html-col">
@@ -146,15 +146,12 @@
   <script src="../dist/main.umd.min.js"></script>
   <script>
     const csvFlex = new CsvFromHtml({
+      triggerSelector: '#csv-from-html-trigger-flex',
       tableSelector: '.csv-from-html-flex',
       rowSelector: '.csv-from-html-row',
       cellSelector: '.csv-from-html-col',
       delimiter: ';',
-      qualifier: "'",
-    })
-    document.querySelector('.data-wrapper .csv-from-html-row:last-child').addEventListener('click',
-    function() {
-      csvFlex.download()
+      qualifier: '"',
     })
   </script>
 </body>

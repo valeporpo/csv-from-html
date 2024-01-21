@@ -4,8 +4,9 @@ import {
 } from "./csv-from-html-validator.js";
 
 export default class CsvFromHtml {
-  constructor(obj) {
+  constructor(obj) { 
     this.validator = new CsvFromHtmlValidator(obj);
+    
     const validatorResponse = this.validator.validate();
     if (
       typeof validatorResponse === "object" &&
@@ -47,6 +48,8 @@ export default class CsvFromHtml {
       this.callback = obj.filter;
     }
 
+    this.downloadBtnClass = 'cfh-download-'+Math.random().toString().substring(2);
+
     this.dataArray = [];
     this.blob, this.trigger;
 
@@ -55,33 +58,10 @@ export default class CsvFromHtml {
 
   loadTrigger() {
     document.addEventListener("click", (e) => {
-      if (e.target.matches("a" + this.triggerSelector)) {
-        this.trigger = document.querySelector(this.triggerSelector);
-      } else if (e.target.closest(this.triggerSelector)) {
-        this.trigger = e.target.closest(this.triggerSelector);
-      } else {
-        delete this.trigger;
-      }
-      if (typeof this.trigger !== "undefined" && this.trigger) {
-        if (!this.trigger.classList.contains("ready")) {
+      if (e.target.matches(this.triggerSelector) && !e.target.classList.contains(this.downloadBtnClass)) {
           e.preventDefault();
           e.stopPropagation();
-
-          this.buildBlob();
-          this.trigger.download = this.fileName + this.fileExtension;
-          this.trigger.href = window.URL.createObjectURL(this.blob);
-          this.trigger.dataset.downloadurl = [
-            this.fileType,
-            this.trigger.download,
-            this.trigger.href,
-          ].join(":");
-          this.trigger.classList.add("ready");
-          this.dataArray = [];
-
-          this.trigger.click();
-        } else {
-          this.trigger.classList.remove("ready");
-        }
+          this.download();
       }
     });
   }
@@ -123,6 +103,7 @@ export default class CsvFromHtml {
 
   download() {
     const hiddenLink = document.createElement("a");
+    hiddenLink.classList.add(this.downloadBtnClass);
     this.buildBlob();
 
     const temporaryUrl = URL.createObjectURL(this.blob);

@@ -50,7 +50,7 @@ Since this package is intended to run in the browser, you have to include it usi
 ### A) Using a CDN (![#1589F0](https://via.placeholder.com/15/1589F0/000000?text=+) the easiest way)
 Just include this tag in your html:
 ```html
-<script src="https://unpkg.com/csv-from-html@3.0.2/dist/main.umd.min.js"></script>
+<script src="https://unpkg.com/csv-from-html@3.0.3/dist/main.umd.min.js"></script>
 ```
 ### B) Using a module boundler (![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) the recommended way)
 I'll give you an example of doing this with [webpack](https://webpack.js.org/). 
@@ -112,7 +112,7 @@ Just include this tag in your html:
         
     You can also pass to it the following **non-required** arguments:  
     
-    ```triggerSelector```: a CSS selector for the download trigger, which must be an A tag uniquely identified  
+    ```triggerSelector```: a CSS selector for the download trigger
     ```fileName```: the name of the file without extension (default is 'myFile')  
     ```delimiter```: the column delimiter of the csv file (default is ```;```)  
     ```qualifier```: the column qualifier of the csv file. Only ```"``` and ```'``` are valid entries (default is ```"```)  
@@ -131,7 +131,7 @@ Just include this tag in your html:
 ```javascript
 const csv = new CsvFromHtml({
       tableSelector: '.cfh-table',
-      triggerSelector: '#cfh-trigger', // When the user clicks on the element with id "cfh-trigger", the download will start (it must be an A tag)
+      triggerSelector: '#cfh-trigger', // When the user clicks on the element with id "cfh-trigger", the download will start
       rowSelector: '.cfh-row',
       cellSelector: '.cfh-cell',
       delimiter: ';',
