@@ -1,6 +1,6 @@
 # csv-from-html
 This library allows you to generate and download csv files containing the text inside HTML elements
-(technicallys speaking, the [innerText](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/innerText) property of the elements).
+(technically, the [innerText](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/innerText) property of the elements).
 For example, starting from
 ```html
 <div class="cfh-table">
@@ -97,7 +97,7 @@ This command will create the source file at './dist/my-csv-from-html.js'
 <script src="./dist/my-csv-from-html.js"></script>
 ``` 
 ### C) Using the package entry point as your script ```src``` attribute (![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) don't use it in production)
-This method falls under bad practice. It should be reserved for testing purposes and is strongly discouraged in production environments.  
+This method falls under bad practices. It should be reserved for testing purposes and is strongly discouraged in production environments.  
 Just include this tag in your html:
 ```html
 <script src="./node_modules/csv-from-html/dist/main.umd.min.js"></script>
@@ -112,7 +112,7 @@ Just include this tag in your html:
         
     You can also pass to it the following **non-required** arguments:  
     
-    ```triggerSelector```: a CSS selector for the download trigger
+    ```triggerSelector```: a CSS selector for the download trigger  
     ```fileName```: the name of the file without extension (default is 'myFile')  
     ```delimiter```: the column delimiter of the csv file (default is ```;```)  
     ```qualifier```: the column qualifier of the csv file. Only ```"``` and ```'``` are valid entries (default is ```"```)  
@@ -123,13 +123,13 @@ Just include this tag in your html:
    - ```cell```: the cell element (optional)
 2) :file_folder: Download the file  
    You have two options to do that.  
-   2a) If you provided the optional parameter ```triggerSelector``` to the constructor, clicking on the first element that matches the selector will start the download.  
+   2a) If you provided the optional parameter ```triggerSelector``` to the constructor, clicking on any element that matches the selector will start the download. Even if the selector is unique, you can have multiple elements that match it, and thus more than one trigger.  
    2b) Using the ```download``` method provided by the ```CsvFromHtml``` object.
 > :bulb: When you create the CsvFromHtml object, neither the "table" element nor the "row" elements nor the "cell" elements nor the trigger element need to exist in the DOM. Using event delegation, it will capture the click event on the first element in the DOM Tree that currently matches the triggerSelector and create the csv file using the elements that currently matches the tableSelector, the rowSelector and cellSelector. This behavior is useful, for example, when the table content is dynamic and may change in response to actions made by the user.
 
 ## Example
 ```javascript
-const csv = new CsvFromHtml({
+const cfh = new CsvFromHtml({
       tableSelector: '.cfh-table',
       triggerSelector: '#cfh-trigger', // When the user clicks on the element with id "cfh-trigger", the download will start
       rowSelector: '.cfh-row',
@@ -150,6 +150,6 @@ const csv = new CsvFromHtml({
       }
     })
 document.querySelector("#cfh-trigger-2").addEventListener("click", function() {
-  csv.download() // The download will also start when the user clicks on the element with id "cfh-trigger-2"
+  cfh.download() // The download will also start when the user clicks on the element with id "cfh-trigger-2"
 })
 ```
